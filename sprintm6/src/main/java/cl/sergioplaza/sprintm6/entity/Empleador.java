@@ -1,10 +1,10 @@
 package cl.sergioplaza.sprintm6.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -26,8 +26,22 @@ public class Empleador {
     private String direccion;
     @Column
     private String email;
-    @Column (name = "id_usuario")
-    private int idUsuario;
+    //Relacion usuario
+    //@Column (name = "id_usuario")
+    @ManyToOne(optional = false,cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_usuario",nullable = false) //nombre hace refeceneria a la tabla que es FK
+    //private int idUsuario;
+    private Usuario usuario;
+
     @Column
     private long telefono;
+    //Relacion tabla intermedia
+    @ManyToMany
+    @JoinTable(name = "empl_trab",
+            joinColumns = @JoinColumn(name = "id_empleador", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "id_trabajador", nullable = false))
+    private List<Empleador> empledores;
+
+
+
 }

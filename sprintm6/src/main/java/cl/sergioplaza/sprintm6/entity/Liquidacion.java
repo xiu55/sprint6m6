@@ -1,30 +1,41 @@
 package cl.sergioplaza.sprintm6.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
-@Data @Entity @Table(name = "Liquidaciones")
+@Data @Entity @Table(name = "liquidaciones") //va con minusculas
 public class Liquidacion {
     @Id
-    @Column(name = "id_liquidacion")
+    @Column(name = "id_liquidacion", nullable = false)
     private long idLiquidacion;
+
+
     @Column(name = "id_trabajador")
-    private int idTrabajador;
+    @ManyToOne(optional = false, cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_trabajador")
+    private Trabajador trabajador;
+
     @Column
-    private String periodo; //es DATE , cambiar a int ? fecha?
+    private String periodo;
     @Column(name = "sueldo_imponible")
     private int sueldoImponible;
     @Column(name = "sueldo_liquido")
     private int sueldoLiquido;
-    @Column(name = "id_inst_salud")
-    private int idInstSalud;
+
+    //@Column(name = "id_inst_salud") /TODO: Borrar despues
+    @ManyToOne(optional = false, cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_inst_salud")
+    private InstitucionSalud idInstSalud;
+
     @Column(name = "monto_inst_salud")
     private int montoInstSalud;
-    @Column(name = "id_inst_prevsional")
-    private int idInstPrevisional;
+
+    //@Column(name = "id_inst_prevsional") //TODO: Borrar despues de confirmacion
+    @ManyToOne(optional = false, cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_inst_prevision")
+    private InstitucionPrevision idInstPrevision;
+
+
     @Column(name = "monto_inst_previsional")
     private int montoInstPrevisional;
     @Column(name = "total_descuento")
@@ -33,4 +44,5 @@ public class Liquidacion {
     private int totalHaberes;
     @Column
     private int anticipo;
+
 }

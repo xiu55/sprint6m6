@@ -1,10 +1,9 @@
 package cl.sergioplaza.sprintm6.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -23,11 +22,35 @@ public class Trabajador {
     private String apellido2;
     @Column
     private String email;
-    @Column(name = "inst_prevision")
-    private int instPrevision;
-    @Column(name = "inst_salud")
-    private int instSalud;
+    //Relacion trabajador - inst. prevision
+    //@Column(name = "inst_prevision") | ESTO NO va xq se esta refiriendo abajo
+    @ManyToOne(optional = false, cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_inst_prevision")
+    private InstitucionPrevision instPrevision;
+
+    //Relacion trabajador - inst. salud
+    //@Column(name = "inst_salud")
+    @ManyToOne(optional = false, cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_inst_salud") //referencia hacia FK
+    private InstitucionSalud instSalud;
+
     @Column
     private long telefono;
+    //Relacion trabajador - liquidacion
+    @OneToMany(mappedBy = "trabajador")
+    List<Liquidacion> liquidacionesTrabajador;
+    //Relacion tabla INTERMEDIA
+    @ManyToMany(mappedBy = "listaTrabajadores")
+    private List<Trabajador> trabajadores;
+
+
+
+
+
+
+    // muchos trabajdores a una prevision
+
+    // @ManyToOne (optional = false, cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    //@JoinColumn(name = "id_perfil",nullable = false)
 
 }

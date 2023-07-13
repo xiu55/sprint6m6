@@ -1,10 +1,9 @@
 package cl.sergioplaza.sprintm6.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -18,5 +17,8 @@ public class Perfil {
     private String descripcion;
     @Column
     private boolean estado;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "perfil") //Enlazando
+    List<Usuario> usuarios;
 
 }
